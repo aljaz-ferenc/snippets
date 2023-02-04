@@ -6,7 +6,6 @@ const activeSlice = createSlice({
     reducers: {
         setActive(state, action){
             state.active = action.payload
-            console.log(state)
         }
     }
 })

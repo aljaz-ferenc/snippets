@@ -4,8 +4,8 @@ import { javascript } from '@codemirror/lang-javascript';
 import { html } from '@codemirror/lang-html';
 import { css } from '@codemirror/lang-css';
 import { vscodeDark } from '@uiw/codemirror-theme-vscode'
-import { Link } from 'react-router-dom';
 import supabase from '../supabase/supabase';
+import { useNavigate } from 'react-router';
 import './Editor.css'
 
 
@@ -15,6 +15,7 @@ export default function Editor() {
     const [javascriptCode, setJavascriptCode] = useState('')
     const [document, setDocument] = useState('')
     const [title, setTitle] = useState('')
+    const navigate = useNavigate()
 
     function onHtmlChangeHander(e) {
         setHtmlCode(e)
@@ -40,12 +41,12 @@ export default function Editor() {
 
     async function handleAddSnippet(e){
         e.preventDefault()
-        const {data, error} = await supabase
+        await supabase
         .from('snippets')
         .insert([
             {title: title, html: htmlCode, css: cssCode, javascript: javascriptCode},
         ])
-        console.log(data, error)
+        navigate('/snippets')
     }
 
     function handleInput(e){
@@ -55,10 +56,6 @@ export default function Editor() {
     return (
         <div className='app'>
             <div className='editors'>
-            <div className='edit__nav'>
-                    <Link to='/snippets'>My Snippets</Link>
-                    {/* <Link to='/'>New Snippet</Link> */}
-                </div>
                 <form className='save-form' onSubmit={handleAddSnippet} action="">
                     <input onChange={handleInput} placeholder="Title" required type="text" name='title' />
                     <button className='save-btn'>Save Snippet</button>

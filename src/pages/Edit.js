@@ -4,9 +4,9 @@ import { javascript } from '@codemirror/lang-javascript';
 import { html } from '@codemirror/lang-html';
 import { css } from '@codemirror/lang-css';
 import { vscodeDark } from '@uiw/codemirror-theme-vscode'
-import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import supabase from '../supabase/supabase';
+import { useNavigate } from 'react-router';
 import './Edit.css'
 
 export default function Edit() {
@@ -16,9 +16,9 @@ export default function Edit() {
     const [cssCode, setCssCode] = useState('')
     const [javascriptCode, setJavascriptCode] = useState('')
     const [document, setDocument] = useState('')
+    const navigate = useNavigate()
     const activeSnippet = snippets.find(snip => snip.id === activeID)
     
-
     function onHtmlChangeHander(e) {
         setHtmlCode(e)
     }
@@ -45,13 +45,13 @@ export default function Edit() {
         setHtmlCode(activeSnippet.html)
         setCssCode(activeSnippet.css)
         setJavascriptCode(activeSnippet.javascript)
-    }, [])
+    }, [activeSnippet.css, activeSnippet.html, activeSnippet.javascript])
 
     async function handleUpdateSnippet() {
-        if (!htmlCode || !cssCode || !javascriptCode) {
+        if (!htmlCode && !cssCode && !javascriptCode) {
             return
         }
-        const { data, error } = await supabase
+        await supabase
             .from('snippets')
             .update({
                 html: htmlCode,
@@ -60,16 +60,14 @@ export default function Edit() {
             })
             .eq('id', activeID)
             .select('*')
+
+            navigate('/snippets')
     }
 
 
     return (
         <div className='app'>
             <div className='editors'>
-                <div className='edit__nav'>
-                    <Link to='/snippets'>My Snippets</Link>
-                    <Link to='/'>New Snippet</Link>
-                </div>
                 <h1 className='edit__title'>{'Edit: ' + activeSnippet.title.toUpperCase()}</h1>
                 <div className='run-container'>
                     <h2 className='editor__heading'>HTML</h2>

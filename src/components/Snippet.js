@@ -18,7 +18,7 @@ export default function Snippet({ title, html, css, javascript, id }) {
       <script>${javascript}</script>
     </html>
   `)
-  }, [])
+  }, [html, css, javascript])
 
   function handleEdit() {
     dispatch(activeActions.setActive(id))
@@ -26,7 +26,7 @@ export default function Snippet({ title, html, css, javascript, id }) {
   }
 
   async function handleDelete(){
-    const {data, error} = await supabase
+    await supabase
       .from('snippets')
       .delete()
       .eq('id', id)

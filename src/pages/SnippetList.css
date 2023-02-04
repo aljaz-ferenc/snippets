@@ -6,29 +6,14 @@
     gap: 2rem;
 }
 
-.list-nav{
-    text-decoration: none;
-    color:#fff;
-    position: relative;
-    margin: 2rem;
+.error{
+    font-size: 2rem;
+    margin: 0 auto;
+    color: red;
 }
 
-.list-nav:hover{
-    color: #aaa;
-}
-
-.list-nav::after{
-    position: absolute;
-    width: 0;
-    height: 1px;
-    bottom: -4px;
-    content: '';
-    background-color: #aaa;
-    left: 0;
-    right: 0;
-    transition: all .2s;
-}
-
-.list-nav:hover::after{
-    width: 100%;
+.loading{
+    font-size: 2rem;
+    margin: 0 auto;
+    color: #fff;
 }
